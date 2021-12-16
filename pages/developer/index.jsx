@@ -1,18 +1,14 @@
-import { useSelector } from 'react-redux'
-import Start from './_start'
-import Progress from './_progress'
+import Start from './_Start'
+import Progress from './_Progress'
+import Layout from './_Layout'
 
 const Main = () => {
-  const maintenance = useSelector(state => state.developer.maintenance)
-
-  if(!maintenance)
-    return (
+  return (
+    <Layout>
       <Start/>
-    )
-  else
-    return (
       <Progress/>
-    )
+    </Layout>
+  )
 }
 
 export default Main

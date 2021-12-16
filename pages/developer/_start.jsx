@@ -16,6 +16,7 @@ const Start = () => {
   const [ errors, setErrors ] = useState({})
   const [ token, setToken ] = useState('')
   const [ loading, setLoading ] = useState(false)
+  const maintenance = useSelector(state => state.developer.maintenance)
 
   useEffect(() => {
     setToken(key ? key.trim(): '')
@@ -46,6 +47,10 @@ const Start = () => {
         alert.error(error)
         setLoading(false)
       })
+  }
+
+  if(maintenance) {
+    return null;
   }
 
   return (

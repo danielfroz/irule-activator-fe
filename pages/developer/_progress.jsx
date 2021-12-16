@@ -34,6 +34,10 @@ const Progress = () => {
     return () => clearInterval(interval)
   }, [ status ])
 
+  if(!maintenance) {
+    return null
+  }
+
   return (
     <Layout>
       <Card>

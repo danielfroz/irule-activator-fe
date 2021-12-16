@@ -34,15 +34,9 @@ const List = () => {
     load()
   }, [ load ])
 
-  function remove(maintenance) {
-    api.post('/maintenance/delete', { key: maintenance.key })
-      .then(() => {
-        alert.info('Maintenance removed')
-        load()
-      })
-      .catch(error => {
-        alert.error(error)
-      })
+  function select(m) {
+    dispatch({ type: r.MAINTENANCE_SELECTED, maintenance: m })
+    router.push('/maintenance/view')
   }
 
   return (
@@ -59,24 +53,20 @@ const List = () => {
         <Card.Header>
           Maintenances in Progress
         </Card.Header>
-        <Table>
+        <Table hover={true} borderless={false}>
           <thead>
             <tr>
               <th>Name</th>
               <th>Key</th>
               <th>Status</th>
-              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {maintenances && maintenances.map((m, idx) => 
-              <tr key={idx}>
+              <tr key={idx} style={{ cursor: 'pointer' }} onClick={() => select(m)}>
                 <td>{m.name}</td>
                 <td>{m.key}</td>
                 <td>{m.status}</td>
-                <td>
-                  <Button variant='danger' size='sm' onClick={() => remove(m)}>Delete</Button>
-                </td>
               </tr>
             )}
           </tbody>

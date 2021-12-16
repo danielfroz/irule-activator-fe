@@ -6,6 +6,7 @@ import { Alert, Button, Card, ListGroup, ListGroupItem, Spinner } from "react-bo
 import { useApi } from '../../hooks'
 import * as r from '../../reducers'
 import Layout from "../../components/Layout"
+import Activities from './_Activities'
 
 const Verify = () => {
   const alert = useAlert()
@@ -25,7 +26,7 @@ const Verify = () => {
     const handler = setInterval(verify, 2 * 1000)
     setIntervalHandler(handler)
     return () => handler != null && clearInterval(handler)
-  }, [ api ])
+  }, [ maintenance && maintenance.key ])
 
   useEffect(() => {
     if(!maintenance)
@@ -40,6 +41,17 @@ const Verify = () => {
       setIntervalHandler(undefined)
     }
   }, [ maintenance, intervalHandler ])
+
+  // triggers new verification
+  function trigger() {
+    api.post('/maintenance/verify', { key: maintenance.key })
+      .then(() => {
+        dispatch({ type: r.MAINTENANCE_CREATED, maintenance: { ...maintenance, status: 'Created' } })
+      })
+      .catch(error => {
+        alert.error(error)
+      })
+  }
 
   function verify() {
     if(!maintenance) {
@@ -70,7 +82,7 @@ const Verify = () => {
         {!loading && maintenance && maintenance.status === 'Verified' &&
           <Fragment>
             <Card.Body>
-              <p>All good! All ready to rock!</p>
+              <p>All good! You are ready to rock!</p>
               <p>You can share the key with your Dev team: {maintenance.key}</p>
             </Card.Body>
             <Card.Footer>
@@ -79,30 +91,22 @@ const Verify = () => {
           </Fragment>
         }
         {!loading && maintenance && maintenance.status === 'VerificationFailed' &&
-          <Card.Body>
-            <Alert variant='danger'>
-              Hmmm... seems that something is not quite right; check the tests and correct...
-            </Alert>
-            Maintenance: 
-            <pre>
-              {JSON.stringify(maintenance, null, 2)}
-            </pre>
-          </Card.Body>
+          <Fragment>
+            <Card.Body>
+              <Alert variant='danger'>
+                Hmmm... seems that something is not quite right; check the tests and correct any problem reported...
+                If you're feeling comfortable with the changes... try to Verify the service again...
+              </Alert>
+              Maintenance: {maintenance.status}
+            </Card.Body>
+            <Card.Footer>
+              <Button onClick={() => trigger()}>Verify Again</Button>
+            </Card.Footer>
+          </Fragment>
         }
       </Card>
 
-      {maintenance && 
-        <ListGroup>
-          {maintenance.activities && maintenance.activities.map((a, idx) =>
-            <ListGroupItem key={idx}>
-              <small>Date: {a.date}</small><br/>
-              <small>Type: {a.type}</small><br/>
-              {a.message}
-              {a.error && <div className='error'>{a.error}</div>}
-            </ListGroupItem>
-          )}
-        </ListGroup>
-      }
+      <Activities/>
     </Layout>
   )
 }
