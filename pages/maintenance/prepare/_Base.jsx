@@ -1,7 +1,6 @@
 import { useState } from "react"
-import { useAlert } from "react-alert"
-import { useDispatch } from "react-redux"
-import { Button, ButtonGroup, Card, Col, Form, Row, Spinner } from "react-bootstrap"
+import { useDispatch, useSelector } from "react-redux"
+import { Button, Card, Col, Form, Row, Spinner } from "react-bootstrap"
 import * as r from '../../../reducers'
 
 const Maintenance = () => {
@@ -10,6 +9,7 @@ const Maintenance = () => {
   const [ name, setName ] = useState('')
   const [ key, setKey ] = useState('')
   const [ loading, setLoading ] = useState(false)
+  const base = useSelector(state => state.maintenance.base)
 
   function save() {
     setLoading(true)
@@ -27,6 +27,28 @@ const Maintenance = () => {
       key
     }
     dispatch({ type: r.MAINTENANCE_BASE_SAVED, base })
+    setLoading(false)
+  }
+
+  function cancel() {
+    dispatch({ type: r.MAINTENANCE_BASE_CANCELLED })
+  }
+
+  if(base) {
+    return (
+      <Card border='primary' className='mb-2'>
+        <Card.Header>Maintenance Info</Card.Header>
+        <Card.Body>
+          <Row>
+            <Col>Name: {base.name}</Col>
+            <Col>Key: {base.key ? base.key: 'to be generated'}</Col>
+          </Row>
+        </Card.Body>
+        <Card.Footer>
+          <Button variant='danger' onClick={cancel}>Cancel</Button>
+        </Card.Footer>
+      </Card>
+    )
   }
 
   return (
@@ -34,7 +56,7 @@ const Maintenance = () => {
       e.preventDefault()
       save()
     }}>
-      <Card border='primary'>
+      <Card border='primary' className='mb-2'>
         <Card.Header>Maintenance Info</Card.Header>
         <Card.Body>
           <Row>

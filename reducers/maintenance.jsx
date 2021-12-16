@@ -1,11 +1,15 @@
+export const MAINTENANCE_BASE_CANCELLED = 'MAINTENANCE_BASE_CANCELLED'
 export const MAINTENANCE_BASE_SAVED = 'MAINTENANCE_BASE_SAVED'
 export const MAINTENANCE_CLEARED = 'MAINTENANCE_CLEARED'
 export const MAINTENANCE_CREATED = 'MAINTENANCE_CREATED'
 export const MAINTENANCE_LISTED = 'MAINTENANCE_LISTED'
+export const MAINTENANCE_UPDATED = 'MAINTENANCE_UPDATED'
 export const MAINTENANCE_CLUSTER_LISTED = 'MAINTENANCE_CLUSTER_LISTED'
 export const MAINTENANCE_CLUSTER_SELECTED = 'MAINTENANCE_CLUSTER_SELECTED'
+export const MAINTENANCE_IRULE_CANCELLED = 'MAINTENANCE_IRULE_CANCELLED'
 export const MAINTENANCE_IRULE_LISTED = 'MAINTENANCE_IRULE_LISTED'
 export const MAINTENANCE_IRULE_SELECTED = 'MAINTENANCE_IRULE_SELECTED'
+export const MAINTENANCE_VIRTUAL_SERVER_CANCELLED = 'MAINTENANCE_VIRTUAL_SERVER_CANCELLED'
 export const MAINTENANCE_VIRTUAL_SERVER_SELECTED = 'MAINTENANCE_VIRTUAL_SERVER_SELECTED'
 export const MAINTENANCE_VIRTUAL_SERVERS_LISTED = 'MAINTENANCE_VIRTUAL_SERVERS_LISTED'
 
@@ -20,6 +24,7 @@ export const maintenance = (state = {}, action) => {
         virtualServer: undefined
       }
     case MAINTENANCE_CREATED:
+    case MAINTENANCE_UPDATED:
       return {
         ...state,
         maintenance: action.maintenance
@@ -28,6 +33,11 @@ export const maintenance = (state = {}, action) => {
       return {
         ...state,
         maintenances: action.maintenances
+      }
+    case MAINTENANCE_BASE_CANCELLED:
+      return {
+        ...state,
+        base: undefined
       }
     case MAINTENANCE_BASE_SAVED:
       return {
@@ -44,6 +54,11 @@ export const maintenance = (state = {}, action) => {
         ...state,
         clusters: action.clusters
       }
+    case MAINTENANCE_IRULE_CANCELLED:
+      return {
+        ...state,
+        iRule: undefined
+      }
     case MAINTENANCE_IRULE_LISTED:
       return {
         ...state,
@@ -53,6 +68,11 @@ export const maintenance = (state = {}, action) => {
       return {
         ...state,
         iRule: action.iRule
+      }
+    case MAINTENANCE_VIRTUAL_SERVER_CANCELLED:
+      return {
+        ...state,
+        virtualServer: undefined
       }
     case MAINTENANCE_VIRTUAL_SERVER_SELECTED:
       return {

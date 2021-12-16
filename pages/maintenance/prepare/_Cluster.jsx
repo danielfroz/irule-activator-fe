@@ -1,10 +1,12 @@
 import { useEffect } from 'react'
+import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux'
 import { Card } from 'react-bootstrap'
 import { useApi } from '../../../hooks'
 import * as r from '../../../reducers'
 
 const Cluster = () => {
+  const alert = useAlert()
   const api = useApi()
   const dispatch = useDispatch()
   const cluster = useSelector(state => state.maintenance.cluster)

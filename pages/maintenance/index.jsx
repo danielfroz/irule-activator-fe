@@ -53,7 +53,7 @@ const List = () => {
         </Button>
       </ButtonGroup>
       <ButtonGroup className='mb-2'>
-        <Button onClick={() => router.push('/maintenance/create')}>Create</Button>
+        <Button onClick={() => router.push('/maintenance/prepare')}>Create</Button>
       </ButtonGroup>
       <Card border='primary'>
         <Card.Header>
